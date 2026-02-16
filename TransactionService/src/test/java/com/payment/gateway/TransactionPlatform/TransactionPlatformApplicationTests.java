@@ -1,10 +1,10 @@
-package com.payment.gateway.PaymentPlatform;
+package com.payment.gateway.TransactionPlatform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PaymentPlatformApplicationTests {
+class TransactionPlatformApplicationTests {
 
 	@Test
 	void contextLoads() {

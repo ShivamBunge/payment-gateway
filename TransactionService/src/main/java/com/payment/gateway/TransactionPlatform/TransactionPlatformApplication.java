@@ -1,13 +1,13 @@
-package com.payment.gateway.PaymentPlatform;
+package com.payment.gateway.TransactionPlatform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PaymentPlatformApplication {
+public class TransactionPlatformApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PaymentPlatformApplication.class, args);
+		SpringApplication.run(TransactionPlatformApplication.class, args);
 	}
 
 }
