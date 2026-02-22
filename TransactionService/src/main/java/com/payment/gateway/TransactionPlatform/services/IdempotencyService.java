@@ -27,4 +27,8 @@ public class IdempotencyService {
     public String getPreviousResponse(String key) {
         return redisTemplate.opsForValue().get(KEY_PREFIX + key);
     }
+
+    public void deleteKey(String key) {
+        redisTemplate.delete(KEY_PREFIX + key);
+    }
 }

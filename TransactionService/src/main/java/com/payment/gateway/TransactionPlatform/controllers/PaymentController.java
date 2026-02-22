@@ -31,12 +31,17 @@ public class PaymentController {
             @RequestHeader("X-Idempotency-Key") String idempotencyKey,
             @RequestBody PaymentRequest request) {
 
+        // 1. This call ATOMICALLY checks and sets "PROCESSING" in Redis
         if (idempotencyService.isDuplicate(idempotencyKey)) {
             String existingResponse = idempotencyService.getPreviousResponse(idempotencyKey);
+
+            // If it's still "PROCESSING", someone else is already working on it
             if ("PROCESSING".equals(existingResponse)) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("{\"error\": \"Request is already being processed.\"}");
+                        .body("{\"message\": \"Transaction in progress. Please wait.\"}");
             }
+
+            // If it's NOT "PROCESSING", it must be the final JSON response
             return ResponseEntity.ok(existingResponse);
         }
 
@@ -53,6 +58,7 @@ public class PaymentController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            idempotencyService.deleteKey(idempotencyKey);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment Failed");
         }
     }
