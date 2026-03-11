@@ -1,7 +1,5 @@
 ---
 title: "ASPay: Resilient Distributed Systems Learning Log"
-date: "2026-03-01"
-author: "Software Engineer | Pune"
 description: "A deep dive into building resilient, event-driven payment gateways."
 ---
 
