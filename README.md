@@ -1,4 +1,3 @@
-
 # 💳 ASPay: Distributed Systems Masterclass
 
 This document records the business workflow, architecture decisions, and technical challenges involved in building a resilient event-driven payment gateway.
@@ -201,4 +200,179 @@ If downstream services fail:
 
 To prevent duplicate charges:
 
-Redis uses atomic operation:
+Redis uses atomic operation: SETNX idempotency:<key>
+
+
+Behavior:
+
+- First request → lock created
+- Duplicate request → existing result returned
+
+This avoids race conditions under high concurrency.
+
+---
+
+## Atomic Check-and-Set
+
+`IdempotencyService` performs:
+
+- Check existence
+- Set processing state
+
+In a **single Redis command**.
+
+Ensures safe behavior in distributed systems.
+
+---
+
+## JSON Schema Evolution
+
+Consumers tolerate schema changes using: @JsonIgnoreProperties(ignoreUnknown = true)
+
+
+If producers add new fields:
+
+- Consumers remain functional
+- No runtime failures occur.
+
+---
+
+## Precision Currency Handling
+
+Floating point types cause rounding errors.
+
+ASPay uses: BigDecimal
+
+Benefits:
+
+- Accurate financial calculations
+- Audit-safe arithmetic
+
+---
+
+## Retry Strategy
+
+Transient failures are handled with **exponential backoff**:
+
+Example retry pattern:
+2s → 4s → 8s
+
+
+This prevents overwhelming failing systems.
+
+---
+
+## Dead Letter Queue Processing
+
+If message retries exceed threshold:
+
+- Message moved to `payment-events-dlt`
+- Manual inspection occurs
+- Pipeline remains unblocked.
+
+---
+
+## Global Exception Handling
+
+Centralized handler using: @ControllerAdvice
+
+
+Ensures:
+
+- Clean JSON error responses
+- No exposed stack traces
+
+---
+
+# 🐋 5. Infrastructure & DevOps Fixes
+
+## WSL2 Docker Disk Migration
+
+Docker virtual disk moved from **C: drive → E: drive** using:
+wsl --export
+wsl --import
+
+
+Solved repeated **disk exhaustion issues**.
+
+---
+
+## Docker Engine Reliability
+
+Ensured Docker engine was fully started before running:
+docker-compose up -d
+
+
+Prevented connection-refused failures.
+
+---
+
+## Docker Log Rotation
+
+Prevented logs from filling disk by configuring:
+max-size: "10m"
+
+
+Inside `docker-compose.yml`.
+
+---
+
+## UTC Time Standardization
+
+All systems forced to **UTC**:
+
+- PostgreSQL
+- JVM
+- Docker containers
+
+Avoids timezone mismatch issues such as `"Asia/Calcutta"`.
+
+---
+
+## Multi-Module Maven Monorepo
+
+Parent POM manages shared dependencies:
+
+- Java 21
+- Spring Boot 3
+
+Child services inherit consistent versions.
+
+---
+
+## Chaos Engineering
+
+Failure scenarios were tested by injecting malformed messages using:
+kafka-console-producer
+
+
+Verified:
+
+- DLQ routing
+- Retry mechanisms
+- Fault isolation
+
+---
+
+# 💻 Essential Command Reference
+
+## Docker Management
+
+```bash
+# Clean unused Docker resources
+docker system prune -a --volumes
+
+# Launch distributed cluster
+docker-compose up -d
+
+Kafka & Redis Auditing
+
+# List Kafka topics
+docker exec -it <kafka_id> kafka-topics --list --bootstrap-server localhost:9092
+
+# Inspect Redis idempotency keys
+docker exec -it <redis_id> redis-cli
+KEYS *
+GET idempotency:payment:<UUID>
+
+
