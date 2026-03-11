@@ -1,7 +1,3 @@
----
-title: "ASPay: Resilient Distributed Systems Learning Log"
-description: "A deep dive into building resilient, event-driven payment gateways."
----
 
 # 💳 ASPay: Distributed Systems Masterclass
 
