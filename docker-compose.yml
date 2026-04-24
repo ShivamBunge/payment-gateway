@@ -1,5 +1,12 @@
-version: '3.8'
 services:
+  transactionservice:
+    image: ...
+    environment:
+      - SPRING_PROFILES_ACTIVE=json
+      # Expose logs from container to host so you can inspect JSON logs locally
+      - LOG_PATH=/app/logs
+    volumes:
+      - ./TransactionService/logs:/app/logs
   postgres:
     image: postgres:15-alpine
     container_name: payment_db

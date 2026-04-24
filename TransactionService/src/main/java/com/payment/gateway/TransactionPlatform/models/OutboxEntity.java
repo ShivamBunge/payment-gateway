@@ -26,4 +26,11 @@ public class OutboxEntity {
 
     private boolean processed = false; // Becomes true once sent to Kafka
 
+    // New metadata to manage retries and visibility
+    private int attempts = 0;
+
+    private String lastError;
+
+    private LocalDateTime processedAt;
+
 }

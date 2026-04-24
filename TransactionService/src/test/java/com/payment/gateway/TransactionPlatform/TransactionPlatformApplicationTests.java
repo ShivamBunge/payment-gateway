@@ -19,7 +19,7 @@ class TransactionPlatformApplicationTests {
 	@Test
 	void testIdempotencyFlow() {
 		String idempotencyKey = "test-key-123";
-		String body = "{\"amount\": 100, \"currency\": \"INR\"}";
+		String body = "{\"amount\": 100, \"currency\": \"INR\", \"sourceAccount\": \"A\", \"destinationAccount\": \"B\"}";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("X-Idempotency-Key", idempotencyKey);

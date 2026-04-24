@@ -20,7 +20,7 @@ public class SecurityConfig {
 
                 // 2. Authorize requests
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/payments/**").permitAll() // Allow our payment endpoint
+                        .requestMatchers("/api/v1/payments", "/api/v1/payments/**").permitAll() // Allow our payment endpoint
                         .anyRequest().authenticated()
                 )
 
