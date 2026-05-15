@@ -18,6 +18,8 @@ services:
       - PGTZ=UTC                # Force Postgres internal timezone to UTC
     ports:
       - "5432:5432"
+    volumes:
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     logging:
       driver: "json-file"
       options:

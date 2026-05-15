@@ -2,6 +2,8 @@ package com.payment.gateway.TransactionPlatform.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.payment.gateway.TransactionPlatform.client.dto.UserServiceResponse;
+import com.payment.gateway.TransactionPlatform.dto.PaymentEventPayload;
 import com.payment.gateway.TransactionPlatform.dto.PaymentRequest;
 import com.payment.gateway.TransactionPlatform.dto.PaymentResponse;
 import com.payment.gateway.TransactionPlatform.models.OutboxEntity;
@@ -16,23 +18,28 @@ import java.util.UUID;
 @Service
 public class PaymentService {
     private final PaymentRepository paymentRepository;
-    private final OutboxRepository outboxRepository; // New: To save the event
-    private final ObjectMapper objectMapper;         // New: To convert data to JSON
+    private final OutboxRepository outboxRepository;
+    private final UserValidationService userValidationService;
+    private final ObjectMapper objectMapper;
 
     public PaymentService(PaymentRepository paymentRepository,
                           OutboxRepository outboxRepository,
+                          UserValidationService userValidationService,
                           ObjectMapper objectMapper) {
         this.paymentRepository = paymentRepository;
         this.outboxRepository = outboxRepository;
+        this.userValidationService = userValidationService;
         this.objectMapper = objectMapper;
     }
 
     @Transactional
-    public PaymentResponse process(PaymentRequest request, String idempotencyKey) {
-        // 1. Save the Payment Entity
+    public PaymentResponse process(PaymentRequest request, String userId, String idempotencyKey) {
+        UserServiceResponse user = userValidationService.validateUserForPayment(userId);
+
         PaymentEntity payment = new PaymentEntity();
         String transactionId = UUID.randomUUID().toString();
         payment.setTransactionId(transactionId);
+        payment.setUserId(userId);
         payment.setAmount(request.amount());
         payment.setCurrency(request.currency());
         payment.setStatus(PaymentStatus.SUCCESS);
@@ -40,14 +47,20 @@ public class PaymentService {
 
         paymentRepository.save(payment);
 
-        // 2. Save the Outbox Entity (This guarantees Kafka will eventually get the message)
         try {
             OutboxEntity outbox = new OutboxEntity();
             outbox.setAggregateId(transactionId);
             outbox.setEventType("PAYMENT_SUCCESS");
 
-            // Convert the payment object to a JSON string for the message payload
-            String payload = objectMapper.writeValueAsString(payment);
+            PaymentEventPayload eventPayload = new PaymentEventPayload(
+                    transactionId,
+                    payment.getAmount(),
+                    payment.getCurrency(),
+                    payment.getStatus().name(),
+                    userId,
+                    user.email()
+            );
+            String payload = objectMapper.writeValueAsString(eventPayload);
             outbox.setPayload(payload);
             outbox.setProcessed(false); // Background worker will pick this up later
 

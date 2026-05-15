@@ -18,6 +18,7 @@
 	<modules>
 		<module>transactionservice</module>
 		<module>notificationservice</module>
+		<module>userservice</module>
 	</modules>
 
 	<!-- Properties -->

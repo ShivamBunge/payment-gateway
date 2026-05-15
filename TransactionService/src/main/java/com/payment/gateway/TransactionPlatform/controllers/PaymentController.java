@@ -3,6 +3,7 @@ package com.payment.gateway.TransactionPlatform.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.gateway.TransactionPlatform.dto.PaymentRequest;
 import com.payment.gateway.TransactionPlatform.dto.PaymentResponse;
+import com.payment.gateway.TransactionPlatform.exception.UserServiceException;
 import com.payment.gateway.TransactionPlatform.services.IdempotencyService;
 import com.payment.gateway.TransactionPlatform.services.PaymentService;
 import jakarta.validation.Valid;
@@ -34,6 +35,7 @@ public class PaymentController {
 
     @PostMapping
     public ResponseEntity<?> processPayment(
+            @RequestHeader("X-User-Id") String userId,
             @RequestHeader("X-Idempotency-Key") String idempotencyKey,
             @Valid @RequestBody PaymentRequest request) {
 
@@ -58,7 +60,7 @@ public class PaymentController {
         }
 
         try {
-            PaymentResponse response = paymentService.process(request, idempotencyKey);
+            PaymentResponse response = paymentService.process(request, userId, idempotencyKey);
             String jsonResponse = objectMapper.writeValueAsString(response);
 
             boolean updated = idempotencyService.finalizeResponseIfProcessing(idempotencyKey, jsonResponse);
@@ -68,10 +70,13 @@ public class PaymentController {
 
             return ResponseEntity.ok(response);
 
+        } catch (UserServiceException e) {
+            idempotencyService.markFailedIfProcessing(idempotencyKey, e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("Error processing payment for idempotencyKey {}: {}", idempotencyKey, e.getMessage(), e);
             idempotencyService.markFailedIfProcessing(idempotencyKey, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"Payment Failed\"}");
+            throw e;
         }
     }
 }

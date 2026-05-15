@@ -1,0 +1,145 @@
+2026-04-24 20:59:22.325 [background-preinit] INFO  o.h.validator.internal.util.Version - [] HV000001: Hibernate Validator 8.0.1.Final
+2026-04-24 20:59:22.399 [main] INFO  c.p.g.T.TransactionPlatformApplication - [] Starting TransactionPlatformApplication using Java 21.0.10 with PID 14372 (E:\payment-gateway\TransactionService\target\classes started by Lenovo in E:\payment-gateway)
+2026-04-24 20:59:22.400 [main] INFO  c.p.g.T.TransactionPlatformApplication - [] The following 1 profile is active: "local"
+2026-04-24 20:59:23.722 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Multiple Spring Data modules found, entering strict repository configuration mode
+2026-04-24 20:59:23.724 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 20:59:23.900 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Finished Spring Data repository scanning in 155 ms. Found 2 JPA repository interfaces.
+2026-04-24 20:59:23.926 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Multiple Spring Data modules found, entering strict repository configuration mode
+2026-04-24 20:59:23.927 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-04-24 20:59:23.941 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - [] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.payment.gateway.TransactionPlatform.repositories.OutboxRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-04-24 20:59:23.942 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - [] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.payment.gateway.TransactionPlatform.repositories.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-04-24 20:59:23.943 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [] Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2026-04-24 20:59:25.125 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [] Tomcat initialized with port 8080 (http)
+2026-04-24 20:59:25.145 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [] Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-24 20:59:25.151 [main] INFO  o.a.catalina.core.StandardService - [] Starting service [Tomcat]
+2026-04-24 20:59:25.151 [main] INFO  o.a.catalina.core.StandardEngine - [] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-04-24 20:59:25.252 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [] Initializing Spring embedded WebApplicationContext
+2026-04-24 20:59:25.252 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [] Root WebApplicationContext: initialization completed in 2772 ms
+2026-04-24 20:59:25.504 [main] INFO  o.h.jpa.internal.util.LogHelper - [] HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-24 20:59:25.587 [main] INFO  org.hibernate.Version - [] HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-04-24 20:59:25.636 [main] INFO  o.h.c.i.RegionFactoryInitiator - [] HHH000026: Second-level cache disabled
+2026-04-24 20:59:26.141 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [] No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 20:59:26.186 [main] INFO  com.zaxxer.hikari.HikariDataSource - [] HikariPool-1 - Starting...
+2026-04-24 20:59:26.404 [main] INFO  com.zaxxer.hikari.pool.HikariPool - [] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@38e7860c
+2026-04-24 20:59:26.406 [main] INFO  com.zaxxer.hikari.HikariDataSource - [] HikariPool-1 - Start completed.
+2026-04-24 20:59:27.622 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - [] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 20:59:27.682 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 20:59:27.724 [main] INFO  c.p.g.T.config.SchemaUpdater - [] SchemaUpdater: ensured outbox columns attempts,last_error,processed_at
+2026-04-24 20:59:28.907 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - [] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-24 20:59:28.981 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - [] Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-04-24 20:59:29.855 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [] Starting ProtocolHandler ["http-nio-8080"]
+2026-04-24 20:59:29.903 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [] Tomcat started on port 8080 (http) with context path '/'
+2026-04-24 20:59:29.922 [main] INFO  c.p.g.T.TransactionPlatformApplication - [] Started TransactionPlatformApplication in 8.467 seconds (process running for 9.112)
+2026-04-24 20:59:35.291 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-24 20:59:35.292 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [] Initializing Servlet 'dispatcherServlet'
+2026-04-24 20:59:35.294 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [] Completed initialization in 1 ms
+2026-04-24 20:59:50.213 [scheduling-1] INFO  c.p.g.T.scheduler.OutboxRelay - [] OutboxRelay: Found 1 pending events to publish.
+2026-04-24 20:59:50.293 [scheduling-1] INFO  o.a.k.c.producer.ProducerConfig - [] ProducerConfig values: 
+	acks = -1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = TransactionPlatform-producer-1
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+2026-04-24 20:59:50.356 [scheduling-1] INFO  o.a.k.c.t.i.KafkaMetricsCollector - [] initializing Kafka metrics collector
+2026-04-24 20:59:50.512 [scheduling-1] INFO  o.a.k.clients.producer.KafkaProducer - [] [Producer clientId=TransactionPlatform-producer-1] Instantiated an idempotent producer.
+2026-04-24 20:59:50.586 [scheduling-1] INFO  o.a.kafka.common.utils.AppInfoParser - [] Kafka version: 3.7.1
+2026-04-24 20:59:50.587 [scheduling-1] INFO  o.a.kafka.common.utils.AppInfoParser - [] Kafka commitId: e2494e6ffb89f828
+2026-04-24 20:59:50.589 [scheduling-1] INFO  o.a.kafka.common.utils.AppInfoParser - [] Kafka startTimeMs: 1777044590581
+2026-04-24 20:59:50.972 [kafka-producer-network-thread | TransactionPlatform-producer-1] INFO  org.apache.kafka.clients.Metadata - [] [Producer clientId=TransactionPlatform-producer-1] Cluster ID: FwUlrbkEQFKbYO_E_miiFw
+2026-04-24 20:59:50.977 [kafka-producer-network-thread | TransactionPlatform-producer-1] INFO  o.a.k.c.p.i.TransactionManager - [] [Producer clientId=TransactionPlatform-producer-1] ProducerId set to 1002 with epoch 0
+2026-04-24 20:59:51.080 [scheduling-1] INFO  c.p.g.T.scheduler.OutboxRelay - [] OutboxRelay: Successfully pushed transaction 9900e8e6-a81b-4ed8-ac03-94a659f0141c to Kafka.
+2026-04-24 21:01:09.483 [SpringApplicationShutdownHook] INFO  o.a.k.clients.producer.KafkaProducer - [] [Producer clientId=TransactionPlatform-producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2026-04-24 21:01:09.496 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - [] Metrics scheduler closed
+2026-04-24 21:01:09.497 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - [] Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-04-24 21:01:09.497 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - [] Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-04-24 21:01:09.497 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - [] Metrics reporters closed
+2026-04-24 21:01:09.499 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.utils.AppInfoParser - [] App info kafka.producer for TransactionPlatform-producer-1 unregistered
+2026-04-24 21:01:09.512 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [] Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 21:01:09.516 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - [] HikariPool-1 - Shutdown initiated...
+2026-04-24 21:01:09.530 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - [] HikariPool-1 - Shutdown completed.
