@@ -16,6 +16,7 @@ public class SchemaUpdater {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // Dev helper: add missing outbox columns (attempts,last_error,processed_at) if they do not exist.
     @PostConstruct
     public void ensureOutboxColumns() {
         try {

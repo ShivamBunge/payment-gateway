@@ -42,6 +42,7 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("user_service_error", ex.getMessage()));
     }
 
+    // Convert validation errors into structured 400 responses instead of stack traces.
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()

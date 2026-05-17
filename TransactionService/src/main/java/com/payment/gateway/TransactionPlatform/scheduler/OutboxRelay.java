@@ -32,6 +32,7 @@ public class OutboxRelay {
      * For multi-instance safety and higher throughput consider using SELECT ... FOR UPDATE SKIP LOCKED
      * or an 'in_flight' claim/update pattern.
      */
+    // Poll unprocessed outbox rows, publish to Kafka and mark processed on ACK.
     @Scheduled(fixedDelay = 5000)
     public void publishEvents() {
         List<OutboxEntity> pendingEvents = outboxRepository.findByProcessedFalse();

@@ -65,6 +65,7 @@ public class IdempotencyService {
      * Returns true if the key already exists (i.e. it's a duplicate request). The caller usually
      * sets the key to "PROCESSING" using setIfAbsent before processing.
      */
+    // Reserve idempotency key in Redis with a short TTL (prevents duplicate processing).
     public boolean isDuplicate(String key) {
         return Boolean.FALSE.equals(
                 redisTemplate.opsForValue().setIfAbsent(KEY_PREFIX + key, "PROCESSING", Duration.ofMinutes(30))
@@ -81,6 +82,7 @@ public class IdempotencyService {
      *  - ttl seconds: DEFAULT_TTL_SECONDS
      */
     public boolean finalizeResponseIfProcessing(String key, String responseJson) {
+        // Atomically write final response into Redis only if key is in PROCESSING state (Lua CAS).
         Long result = redisTemplate.execute(FINALIZE_SCRIPT, Collections.singletonList(KEY_PREFIX + key), "PROCESSING", responseJson, String.valueOf(DEFAULT_TTL_SECONDS));
         return result != null && result == 1L;
     }
@@ -92,6 +94,7 @@ public class IdempotencyService {
      * This uses the LUA_MARK_FAILED script with the same ARGV contract as above.
      */
     public boolean markFailedIfProcessing(String key, String reason) {
+        // If a processing attempt failed, atomically mark the idempotency record as FAILED so later callers see failure.
         String failedValue = "FAILED:" + (reason == null ? "" : reason);
         Long result = redisTemplate.execute(MARK_FAILED_SCRIPT, Collections.singletonList(KEY_PREFIX + key), "PROCESSING", failedValue, String.valueOf(DEFAULT_TTL_SECONDS));
         return result != null && result == 1L;

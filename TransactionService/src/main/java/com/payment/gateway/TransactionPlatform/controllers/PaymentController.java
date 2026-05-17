@@ -1,5 +1,6 @@
 package com.payment.gateway.TransactionPlatform.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.gateway.TransactionPlatform.dto.PaymentRequest;
 import com.payment.gateway.TransactionPlatform.dto.PaymentResponse;
@@ -33,11 +34,13 @@ public class PaymentController {
         this.objectMapper = objectMapper;
     }
 
+
+    // Handle incoming payment request: validate input, enforce idempotency, call service, and finalize idempotency record.
     @PostMapping
     public ResponseEntity<?> processPayment(
             @RequestHeader("X-User-Id") String userId,
             @RequestHeader("X-Idempotency-Key") String idempotencyKey,
-            @Valid @RequestBody PaymentRequest request) {
+            @Valid @RequestBody PaymentRequest request) throws JsonProcessingException {
 
         if (idempotencyService.isDuplicate(idempotencyKey)) {
             String existingResponse = idempotencyService.getPreviousResponse(idempotencyKey);

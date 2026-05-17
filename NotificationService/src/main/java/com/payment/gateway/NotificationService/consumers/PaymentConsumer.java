@@ -37,6 +37,8 @@ public class PaymentConsumer {
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
             dltStrategy = DltStrategy.FAIL_ON_ERROR // If it still fails, move to DLT
     )
+
+    // Deserialize event, deduplicate using Redis, and send notifications to users or downstream systems.
     @KafkaListener(topics = "payment-events", groupId = "notification-group")
     public void consume(String message) {
         try {

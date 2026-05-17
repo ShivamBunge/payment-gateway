@@ -32,6 +32,7 @@ public class PaymentService {
         this.objectMapper = objectMapper;
     }
 
+    // Persist payment and outbox row atomically in one DB transaction.
     @Transactional
     public PaymentResponse process(PaymentRequest request, String userId, String idempotencyKey) {
         UserServiceResponse user = userValidationService.validateUserForPayment(userId);

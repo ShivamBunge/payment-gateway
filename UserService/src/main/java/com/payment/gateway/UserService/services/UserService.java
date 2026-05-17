@@ -22,6 +22,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+	// Validate uniqueness, persist UserEntity with a generated userId and return a UserResponse.
 	@Transactional
 	public UserResponse create(CreateUserRequest request) {
 		if (userRepository.existsByEmail(request.email())) {
@@ -38,6 +39,7 @@ public class UserService {
 		return toResponse(userRepository.save(user));
 	}
 
+	// Load user by userId and map to UserResponse; throw UserNotFoundException if absent.
 	@Transactional(readOnly = true)
 	public UserResponse getByUserId(String userId) {
 		return userRepository.findByUserId(userId)
@@ -45,6 +47,7 @@ public class UserService {
 				.orElseThrow(() -> new UserNotFoundException(userId));
 	}
 
+	// Apply partial updates to the UserEntity and persist; ensure email uniqueness when changed.
 	@Transactional
 	public UserResponse update(String userId, UpdateUserRequest request) {
 		UserEntity user = userRepository.findByUserId(userId)

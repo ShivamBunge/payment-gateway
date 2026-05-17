@@ -17,6 +17,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
     public static final String CORRELATION_ID_HEADER_NAME = "X-Request-Id";
     private static final String MDC_KEY = "correlationId";
 
+    // Ensure each request has a correlation id and place it into MDC for traceable logs.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
