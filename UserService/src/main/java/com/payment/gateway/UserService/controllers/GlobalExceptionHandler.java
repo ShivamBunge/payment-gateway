@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,6 +24,14 @@ public class GlobalExceptionHandler {
 				.map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
 				.collect(Collectors.joining(", "));
 		return ResponseEntity.badRequest().body(new ErrorResponse("validation_failed", message));
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorResponse> handleParseError(HttpMessageNotReadableException ex) {
+		// Log the full exception including cause to help debugging malformed JSON from clients
+		log.warn("JSON parse error: {}", ex.getMessage());
+		String message = "JSON parse error: " + (ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
+		return ResponseEntity.badRequest().body(new ErrorResponse("parse_error", message));
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)

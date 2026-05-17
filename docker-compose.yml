@@ -1,12 +1,33 @@
 services:
   transactionservice:
-    image: ...
+    build:
+      # Use the repository root as the build context so the Maven multi-module parent POM is available
+      context: .
+      dockerfile: TransactionService/Dockerfile
+    image: transactionservice:local
     environment:
       - SPRING_PROFILES_ACTIVE=json
       # Expose logs from container to host so you can inspect JSON logs locally
       - LOG_PATH=/app/logs
+      # Use the userservice hostname inside the compose network (container port remains 8082)
+      - user.service.base-url=http://userservice:8082
+      # Override datasource and other services so the container resolves service hostnames in this compose network
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/payment_db
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_LOGGING_LEVEL_COM_PAYMENT_GATEWAY_TRANSACTIONPLATFORM_CLIENT=DEBUG
     volumes:
       - ./TransactionService/logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    ports:
+      # Map container 8080 to host 8081 to avoid conflicts on developer machines; change to "8080:8080" if you prefer.
+      - "8081:8080"
   postgres:
     image: postgres:15-alpine
     container_name: payment_db
@@ -69,3 +90,23 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  userservice:
+    build:
+      # Use the repository root as the build context so the Maven multi-module parent POM is available
+      context: .
+      dockerfile: UserService/Dockerfile
+    image: userservice:local
+    ports:
+      # Host port changed to 8083 to avoid conflicts on developer machines where 8082 may be occupied.
+      # If you prefer to keep 8082, revert to "8082:8082" or stop the local process using 8082.
+      - "8083:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      # Override datasource so the container connects to the Postgres service in this compose network
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/user_db
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - postgres

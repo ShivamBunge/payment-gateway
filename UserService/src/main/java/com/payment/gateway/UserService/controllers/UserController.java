@@ -28,13 +28,13 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<UserResponse> getById(@PathVariable String userId) {
+	public ResponseEntity<UserResponse> getById(@PathVariable("userId") String userId) {
 		return ResponseEntity.ok(userService.getByUserId(userId));
 	}
 
 	@PatchMapping("/{userId}")
 	public ResponseEntity<UserResponse> update(
-			@PathVariable String userId,
+			@PathVariable("userId") String userId,
 			@Valid @RequestBody UpdateUserRequest request) {
 		return ResponseEntity.ok(userService.update(userId, request));
 	}
